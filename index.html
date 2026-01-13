@@ -55,13 +55,24 @@
       font-size: 1.2em;
       color: #fff;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.3s;
+    }
+    audio {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
     }
   </style>
 </head>
 <body>
-  <div class="hint" id="hint"></div>
+  <!-- 纯音乐生日快乐歌（钢琴版） -->
+  <audio id="bgm" loop>
+    <source src="https://freetyst.nf.migu.cn/public/product8th/product39/2020/04/1515/2020%E5%B9%B404%E6%9C%8805%E6%97%A506%E7%82%B922%E5%88%86%E5%86%85%E5%AE%B9%E5%87%86%E5%85%A5%E6%AD%A3%E4%B8%9C26%E9%A6%96663317/%E6%A0%87%E6%B8%85%E9%AB%98%E6%B8%85/MP3_128_16_Stero/6005662MK6R152504.mp3?channelid=02&msisdn=703d23f1-dbbf-443f-b4de-e729ffd9f09c&Tim=1768283376257&Key=53dcbc14f564223c" type="audio/mpeg">
+  </audio>
+
+  <div class="hint" id="hint">🎵 点击任意位置，开启生日惊喜！</div>
   <div class="container">
     <div class="cake">🎂</div>
     <h1>生日快乐！</h1>
@@ -70,7 +81,8 @@
       愿你今天被幸福包围，被笑声环绕，<br>
       每一天都比昨天更闪耀✨<br>
       永远可爱、自信、闪闪发光！<br>
-      新的一岁，心想事成，万事顺意！
+      新的一岁，心想事成，万事顺意！<br>
+      在东北玩，别玩疯了！！！
     </p>
   </div>
 
@@ -79,34 +91,40 @@
     const hintEl = document.getElementById('hint');
     const msg1 = document.getElementById('msg1');
     const msg2 = document.getElementById('msg2');
+    const bgm = document.getElementById('bgm');
 
     const hints = [
       "再点一下试试？😉",
-      "嘿嘿，快了快了～🎈",
-      ""
+      "嘿嘿，快了快了～🎈"
     ];
 
     document.body.addEventListener('click', () => {
+      // 第一次点击：播放纯音乐
+      if (clickCount === 0) {
+        bgm.volume = 0.45; // 音量适中
+        bgm.play().catch(e => console.log("播放需用户交互"));
+        hintEl.textContent = "🎉 再点两次揭晓祝福！";
+        setTimeout(() => {
+          hintEl.style.opacity = '0';
+        }, 2000);
+      }
+
       clickCount++;
+
       if (clickCount <= 2) {
-        hintEl.textContent = hints[clickCount - 1];
         hintEl.style.opacity = '1';
+        hintEl.textContent = hints[clickCount - 1];
         setTimeout(() => {
           hintEl.style.opacity = '0';
         }, 1500);
       } else if (clickCount === 3) {
-        // 显示祝福语
+        // 显示祝福
         msg1.style.opacity = '1';
         msg2.style.opacity = '1';
-
-        // 可选：添加一点庆祝效果
         document.body.style.background = 'linear-gradient(135deg, #a1c4fd, #c2e9fb)';
         document.querySelector('.cake').textContent = '🎉';
-        hintEl.textContent = '🎁 惊喜揭晓！';
+        hintEl.textContent = '🎁 生日快乐，猪盈盈！';
         hintEl.style.opacity = '1';
-        setTimeout(() => {
-          hintEl.style.opacity = '0';
-        }, 2000);
       }
     });
   </script>
